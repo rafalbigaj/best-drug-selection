@@ -29,7 +29,7 @@ function PersonCard (props) {
   };
 
   return (
-    <div onClick={handleClick} className={styles['user-card']}>
+    <div onClick={handleClick} className={classNames(styles['user-card'], {'markWithColorBorder': props.highligth})}>
       <img className={styles['user-avatar']} src={'images/avatars/' + props.name.toLowerCase() + '.svg'}/>
       <h1 className={classNames(styles['user-name'], {'markWithColor': props.highligth})}>{props.name}</h1>
       <p className={styles['user-title']}>{profession}</p>

@@ -36,8 +36,10 @@ class Scoring extends Component {
     this.persons = modelInfo['model-input'];
     this.expectedSchema = modelInfo['model-schema'];
     this.handlePredicting = this.handlePredicting.bind(this);
+    this.handleFeedback = this.handleFeedback.bind(this);
     this.setScoringData = this.setScoringData.bind(this);
     this.setScoringHref = this.setScoringHref.bind(this);
+    // this.setFeedbackUrl = this.setFeedbackUrl.bind(this);
     this.reset = this.reset.bind(this);
   }
 
@@ -91,15 +93,28 @@ class Scoring extends Component {
     });
   }
 
-  setScoringHref (id, data) {
+  // setScoringHref (id, data) {
+  //   if (this.state.scoringHref && this.state.scoringHref.id === id) {
+  //     return;
+  //   }
+  //   this.setState({
+  //     scoringHref: {id: id, value: data},
+  //     scoringResult: null
+  //   });
+  // }
+
+  setScoringHref (id, data, feedbackUrl) {
+    console.log(feedbackUrl);
     if (this.state.scoringHref && this.state.scoringHref.id === id) {
       return;
     }
     this.setState({
       scoringHref: {id: id, value: data},
-      scoringResult: null
+      scoringResult: null,
+      feedbackUrl: feedbackUrl
     });
   }
+
 
   reset () {
     this.setState({
@@ -132,6 +147,46 @@ class Scoring extends Component {
       } else {
         this._alert(error);
       }
+    });
+  }
+
+  handleFeedback (drugName, e) {
+    e.preventDefault();
+    console.log(drugName);
+    var feedbackData = JSON.parse(this.state.scoringData.value);
+    var data = {
+      feedbackData: feedbackData.push(drugName),
+      feedbackUrl: this.state.feedbackUrl
+    };
+    this.sendFeedback(data, (error, result) => {
+      if (!error) {
+        this.setState({
+          feedbackResult: result
+        });
+      } else {
+        this._alert(error);
+      }
+    });
+  }
+
+  sendFeedback (feedbackData, callback) {
+    $.post('/env/feedback/', feedbackData, function (response) {
+      if (response.errors) {
+        callback(response.errors);
+      }
+      callback(null, response.score);
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+      let err = (jqXHR.responseJSON ? jqXHR.responseJSON.errors : 'Feedback service failure.');
+      /* extract error */
+      let e = [jqXHR];
+      try {
+        e = e[0].responseJSON.error;
+      } catch (e) {
+        // suppress
+      }
+      err += ((typeof e === 'undefined') ? 'Undefined error' : e);
+      callback && callback(err);
     });
   }
 
@@ -182,10 +237,10 @@ componentWillUnmount () {
           <div onClick={this.handlePredicting} className={styles.runButton + ' center'}>Generate Predictions</div>
         </div>
         <div className={styles.group}>
-          <div onClick={this.handleFeedback} className={styles.runButton + ' center'}>Drug A is the best</div>
+          <div onClick={(e) => this.handleFeedback('drugA', e)} className={styles.runButton + ' center'}>Drug A is the best</div>
         </div>
         <div className={styles.group}>
-          <div onClick={this.handlePredicting} className={styles.runButton + ' center'}>Drug B is the best</div>
+          <div onClick={(e) => this.handleFeedback('drugB', e)} className={styles.runButton + ' center'}>Drug B is the best</div>
         </div>
         <div className={styles.group}>
           {scoringResult}

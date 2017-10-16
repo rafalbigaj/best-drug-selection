@@ -43,7 +43,7 @@ class DeploymentsTable extends Component {
     if (deployment.disabled) {
       return;
     };
-    this.props.onChoose && this.props.onChoose(deployment.name, deployment.scoringHref);
+    this.props.onChoose && this.props.onChoose(deployment.name, deployment.scoringHref, deployment.model.feedback_url);
   };
   render () {
     let ctx = this;
@@ -67,7 +67,7 @@ class DeploymentsTable extends Component {
                   key={entry.id}
                   value={JSON.stringify(entry)}
                   onClick={ctx.handleSelect}
-                  className={classNames(entry.disabled ? [styles.disableRow] : styles.enableRow)}
+                  className={classNames(entry.disabled ? [styles.disableRow] : styles.enableRow, {'markWithColorBorder': ctx.props.selected === entry.name})}
                   title={entry.disabled ? "Data schema of this model is incompatible with data schema expected by this application.": ''}>
                   <td className={classNames({[styles.enabledRowName]: !entry.disabled, markWithColor: ctx.props.selected === entry.name}, styles.name)}>{entry.name}</td>
                   <td className={styles['status']}>{entry.status}</td>

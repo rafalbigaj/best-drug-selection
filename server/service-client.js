@@ -122,6 +122,42 @@ ServiceClient.prototype = {
     });
   },
 
+  sendFeedback: function (href, data, callback) {
+    logger.enter('sendFeedback()', 'href: ' + href + ', data: ' + data);
+    let options = {
+      method: 'POST',
+      uri: href,
+      headers: {'content-type': 'application/json'}
+    };
+    let body = JSON.stringify({values: [data], fields: schema});
+    debug(body);
+    options.body = body;
+
+    this.performRequest(options, function (error, response, body) {
+      if (!error && response.statusCode === 200) {
+        var scoreResponse = JSON.parse(body);
+
+        logger.info('sendFeedback()', `successfully sent feedback for feedbackUrl ${href}`);
+        callback && callback(null, scoreResponse);
+      } else if (error) {
+        logger.error(error);
+        callback && callback(JSON.stringify(error.message));
+      } else {
+        let error = JSON.stringify('Service error code: ' + response.statusCode);
+        if (typeof response.body !== 'undefined') {
+          try {
+            error = JSON.stringify(JSON.parse(response.body).message);
+          } catch (e) {
+            // suppress
+          }
+        }
+        logger.error(`sendFeedback() error during sending feedback for feedbackUrl: ${href}, msg: ${error}`);
+        debug(error, 'body: ', response.body);
+        callback && callback(error);
+      }
+    });
+  },
+
   _extendDeploymentWithModel: function (instanceDetails, deployments, callback) {
     if (deployments.length === 0) {
       callback(null, deployments);

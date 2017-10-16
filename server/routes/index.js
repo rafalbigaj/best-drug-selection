@@ -55,4 +55,21 @@ envRouter.post('/score', function (req, res) {
   }
 });
 
+envRouter.post('/feedback', function (req, res) {
+  let feedbackUrl = req.body.feedbackUrl;
+  let feedbackData = req.body.feedbackData;
+  try {
+    feedbackData = JSON.parse(feedbackData);
+
+    var pmEnv = req.app.get('pm service env');
+    var pmClient = new PMClient(pmEnv);
+
+    pmClient.sendFeedback(feedbackUrl, feedbackData, function (errors, score) {
+      res.json({errors: errors, score: score});
+    });
+  } catch (err) {
+    res.status(500).json({errors: ['Provided feedback input is not valid']});
+  }
+});
+
 exports.env = envRouter;

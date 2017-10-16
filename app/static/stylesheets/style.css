@@ -1,5 +1,5 @@
 body {
-	background-image: url(../images/background.png);
+	background: whitesmoke;
 	background-size: cover;
 	font-family: Helvetica Neue, sans-serif;
 }
@@ -18,4 +18,8 @@ h3 {
 
 .markWithColor {
 	color: #F15D4E;
+}
+
+.markWithColorBorder {
+    border: 4px solid #F15D4E;
 }
