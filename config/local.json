@@ -1,0 +1,12 @@
+{
+  "pm-20": [
+    {
+      "credentials": {
+        "url": "https://ibm-watson-ml.mybluemix.net",
+        "username": "xxx",
+        "password": "xxx",
+        "instance_id": "xxx"
+      }
+    }
+  ]
+}

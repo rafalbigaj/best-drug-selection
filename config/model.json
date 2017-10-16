@@ -1,0 +1,23 @@
+{
+  "model-schema": [
+    {"name": "AGE", "type": "integer"},
+    {"name": "SEX", "type": "string"},
+    {"name": "BP", "type": "string"},
+    {"name": "CHOLESTEROL", "type": "string"},
+    {"name": "NA", "type": "decimal(12,6)"},
+    {"name": "K", "type": "decimal(13,6)"}
+  ],
+  "model-input": [
+    {"id": "Alice", "data": [24,"M","HIGH","NORMAL",0.613261,0.064726]},
+    {"id": "Gregory", "data": [32,"M","HIGH","NORMAL",0.529750,0.056087]},
+    {"id": "Joanna", "data": [58,"F","HIGH","NORMAL",0.868924,0.061023]},
+    {"id": "Alexander", "data": [65,"M","HIGH","NORMAL",0.635551,0.056043]}
+  ],
+  "model-prediction-mapping": {
+    "0": ["Camping Equipment", "camping.svg"],
+    "1": ["Personal Accessories", "accessories.svg"],
+    "2": ["Drug A", "mountaineering.svg"],
+    "3": ["Golf Equipment", "golfing.svg"],
+    "4": ["Drug B", "outdoor_protection.svg"]
+  }
+}
