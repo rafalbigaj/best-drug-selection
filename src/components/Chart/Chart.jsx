@@ -44,7 +44,6 @@ class Chart extends Component {
   }
 
   componentWillUnmount () {
-    this.serverRequest.abort();
   }
 
   render () {
