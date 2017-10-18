@@ -42,7 +42,7 @@ class App extends Component {
       return a;
     });
     if (!exists) {
-      alerts =  [...this.state.alerts, {message: message, id: counter++}];
+      alerts = [...this.state.alerts, {message: message, id: counter++}];
     }
     this.setState({
       alerts
@@ -50,7 +50,6 @@ class App extends Component {
   }
 
   render () {
-    let ctx = this;
     return (
       <div>
         <div className={styles.mainContainer}>

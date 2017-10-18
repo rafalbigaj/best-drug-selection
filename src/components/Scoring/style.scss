@@ -12,6 +12,10 @@
   padding-top: 34px;
 }
 
+.feedbackButton{
+  padding-top: 8px;
+}
+
 .scoring-result {
   min-width: 420px;
   background-color: #ffffff;
@@ -82,4 +86,18 @@
 
 .bold{
   font-weight: 600;
+}
+
+.scoring-result-left table {
+  color: #9b9b9b;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.scoring-result-left table tr td:first-child  {
+  font-size: 12px;
+  font-weight: 400;
 }

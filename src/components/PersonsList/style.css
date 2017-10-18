@@ -8,7 +8,6 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-bottom: 10px;
   cursor: pointer;
-  margin: 8px;
 }
 
 .user-card:hover{
@@ -71,5 +70,5 @@
   display: flex;
   flex-flow: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
 }

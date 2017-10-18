@@ -20,6 +20,12 @@ import classNames from 'classnames';
 import styles from './style.scss';
 
 const predictionsMapping = require('../../../config/model.json')['model-prediction-mapping'];
+const modelInfo = require('../../../config/model.json');
+
+const genderTitles = {
+  'M': 'Male',
+  'F': 'Female'
+};
 
 class Result extends Component {
   constructor (props) {
@@ -31,9 +37,11 @@ class Result extends Component {
     location.href = '#scoringResult';
   }
 
-  handleClose() {
+  handleClose () {
     this.props.onClose && this.props.onClose();
   }
+
+  //  <img src={'images/predictions/' + best.product[1]}/>
 
   render () {
     let {probability} = this.props;
@@ -43,10 +51,58 @@ class Result extends Component {
     .filter(a => a.value > 0)
     .sort((a, b) => b.value - a.value);
     let best = probability.shift();
+
+    const scoringValues = this.props.scoringResult.values[0];
+    const age = scoringValues[0];
+    const gender = genderTitles[scoringValues[1]];
+    const bp = scoringValues[2];
+    const ch = scoringValues[3];
+    const na = scoringValues[4];
+    const k = scoringValues[5];
+
+    let feedbackButtons = modelInfo['label-values'].map(label => {
+      return (
+        <div className={styles.feedbackButton}>
+          <div onClick={(e) => this.props.handleFeedback(label.value, e)} className={styles.runButton + ' center'}>{label.title} is the best</div>
+        </div>
+      );
+    });
+
     return (
       <div id="scoringResult" className={styles['scoring-result']}>
         <div className={styles['scoring-result-left']}>
-          <img src={'images/predictions/' + best.product[1]}/>
+          <table>
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>{this.props.id}</td>
+              </tr>
+              <tr>
+                <td>Age</td>
+                <td>{age}</td>
+              </tr>
+              <tr>
+                <td>Gender</td>
+                <td>{gender}</td>
+              </tr>
+              <tr>
+                <td>BP</td>
+                <td>{bp}</td>
+              </tr>
+              <tr>
+                <td>CH</td>
+                <td>{ch}</td>
+              </tr>
+              <tr>
+                <td>NA</td>
+                <td>{na}</td>
+              </tr>
+              <tr>
+                <td>K</td>
+                <td>{k}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <div className={styles['scoring-result-middle']}>
@@ -60,15 +116,15 @@ class Result extends Component {
         </div>
 
         <div className={styles['scoring-result-right']}>
-          <div>
-            <h1>Additional Recommendations</h1>
-            {probability.map(p => <p><span className={styles['bold']}>{p.value}%</span> {p.product[0]}</p>)}
-          </div>
-          <div style={{display:'flex', alignItems: 'center'}}>
+          {
+            (!this.props.feedbackResult) ? (<div>
+              {feedbackButtons}
+            </div>) : (<div style={{display: 'flex', alignItems: 'center'}}> Your feedback delivered.</div>)
+          }
+          <div style={{display: 'flex', alignItems: 'start', marginRight: '-20px', marginTop: '-20px'}}>
             <img src='/images/close.png' onClick={this.handleClose} style={{cursor: 'pointer'}}/>
           </div>
         </div>
-
       </div>
     );
   }

@@ -84,12 +84,16 @@ class Scoring extends Component {
   }
 
   setScoringData (id, data) {
+    console.log('setScoringData', this.state.scoringData);
     if (this.state.scoringData && this.state.scoringData.id === id) {
       return;
     }
     this.setState({
       scoringData: {id: id, value: data},
       scoringResult: null
+    }, () => {
+      console.log('setScoringData', this.state.scoringData);
+      this.handlePredicting();
     });
   }
 
@@ -115,7 +119,6 @@ class Scoring extends Component {
     });
   }
 
-
   reset () {
     this.setState({
       scoringResult: null,
@@ -124,8 +127,7 @@ class Scoring extends Component {
     });
   }
 
-  handlePredicting (e) {
-    e.preventDefault();
+  handlePredicting () {
     if (this.state.scoringHref == null) {
       this._alert('Select a Deployment');
       return;
@@ -141,6 +143,7 @@ class Scoring extends Component {
     };
     this.score(data, (error, result) => {
       if (!error) {
+        console.log('scoringResult', result);
         this.setState({
           scoringResult: result
         });
@@ -170,7 +173,7 @@ class Scoring extends Component {
     this.sendFeedback(data, (error, result) => {
       if (!error) {
         this.setState({
-          feedbackResult: result
+          feedbackResult: result || true
         });
       } else {
         this._alert(error);
@@ -220,9 +223,9 @@ class Scoring extends Component {
     });
   }
 
-componentWillUnmount () {
-  this.serverRequest.abort();
-}
+  componentWillUnmount () {
+    this.serverRequest.abort();
+  }
 
   render () {
     let scoringResult = (this.state.scoringResult &&
@@ -231,28 +234,33 @@ componentWillUnmount () {
         deployment={this.state.scoringHref.id}
         probability={this.state.scoringResult.probability.values}
         onClose={this.reset}
+        scoringResult={this.state.scoringResult}
+        handleFeedback={this.handleFeedback}
+        feedbackResult={this.state.feedbackResult}
       />);
-    let feedbackButtons = modelInfo['label-values'].map(label => {
-      return (
-        <div className={styles.group}>
-          <div onClick={(e) => this.handleFeedback(label.value, e)} className={styles.runButton + ' center'}>{label.title} is the best</div>
-        </div>
-      );
-    });
+    // let feedbackButtons = modelInfo['label-values'].map(label => {
+    //   return (
+    //     <div className={styles.group}>
+    //       <div onClick={(e) => this.handleFeedback(label.value, e)} className={styles.runButton + ' center'}>{label.title} is the best</div>
+    //     </div>
+    //   );
+    // });
     return (
       <div>
         <div className={styles.group}>
           <h3>Select a Deployment</h3>
           <Table data={this.state.deployments} onChoose={this.setScoringHref} className="center" selected={this.state.scoringHref && this.state.scoringHref.id}/>
         </div>
-        <div className={styles.group}>
+        { this.state.scoringHref ? (<div className={styles.group}>
           <h3>Select a Customer</h3>
           <PersonsList persons={this.persons} onChoose={this.setScoringData} selected={this.state.scoringData && this.state.scoringData.id}/>
-        </div>
+        </div>) : null}
         <div className={styles.group}>
-          <div onClick={this.handlePredicting} className={styles.runButton + ' center'}>Generate Predictions</div>
+          {scoringResult}
         </div>
-        {feedbackButtons}
+        { this.state.scoringData && this.state.scoringHref && this.state.scoringResult ? (<div className={styles.group}>
+          <div onClick={this.handlePredicting} className={styles.runButton + ' center'} style={{marginBottom: '30px'}}>Regenerate Predictions</div>
+        </div>) : null}
       </div>
     );
   }
