@@ -21,10 +21,10 @@
     {"id": "Alexander", "data": [65,"M","HIGH","NORMAL",0.635551,0.056043]}
   ],
   "model-prediction-mapping": {
-    "0": ["Camping Equipment", "camping.svg"],
-    "1": ["Personal Accessories", "accessories.svg"],
-    "2": ["Drug A", "mountaineering.svg"],
-    "3": ["Golf Equipment", "golfing.svg"],
-    "4": ["Drug B", "outdoor_protection.svg"]
+    "0": "Drug A",
+    "1": "Drug B",
+    "2": "Drug C",
+    "3": "Drug D",
+    "4": "Drug X"
   }
 }

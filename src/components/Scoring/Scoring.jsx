@@ -17,6 +17,7 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import Table from '../DeploymentsTable';
+import Chart from '../Chart';
 import PersonsList from '../PersonsList';
 import ScoringResult from './Result.jsx';
 import styles from './style.scss';
@@ -228,8 +229,9 @@ class Scoring extends Component {
   }
 
   render () {
-    let scoringResult = (this.state.scoringResult &&
-      <ScoringResult
+    let scoringResult, scoringChart;
+    if (this.state.scoringResult) {
+      scoringResult = (<ScoringResult
         id={this.state.scoringData.id}
         deployment={this.state.scoringHref.id}
         probability={this.state.scoringResult.probability.values}
@@ -238,13 +240,15 @@ class Scoring extends Component {
         handleFeedback={this.handleFeedback}
         feedbackResult={this.state.feedbackResult}
       />);
-    // let feedbackButtons = modelInfo['label-values'].map(label => {
-    //   return (
-    //     <div className={styles.group}>
-    //       <div onClick={(e) => this.handleFeedback(label.value, e)} className={styles.runButton + ' center'}>{label.title} is the best</div>
-    //     </div>
-    //   );
-    // });
+
+      scoringChart = (
+        <div id="scoringResult" className={styles['scoring-result']}>
+          <Chart
+            scoringResult={this.state.scoringResult}>
+          </Chart>
+      </div>);
+    }
+
     return (
       <div>
         <div className={styles.group}>
@@ -257,6 +261,7 @@ class Scoring extends Component {
         </div>) : null}
         <div className={styles.group}>
           {scoringResult}
+          {scoringChart}
         </div>
         { this.state.scoringData && this.state.scoringHref && this.state.scoringResult ? (<div className={styles.group}>
           <div onClick={this.handlePredicting} className={styles.runButton + ' center'} style={{marginBottom: '30px'}}>Regenerate Predictions</div>

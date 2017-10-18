@@ -106,12 +106,12 @@ class Result extends Component {
         </div>
 
         <div className={styles['scoring-result-middle']}>
-          <h1>{best.value}% {best.product[0]}</h1>
+          <h1>{best.value}% {best.product}</h1>
           <p className={styles['scoring-paragraph']}>Based
           on your selection of <span className={classNames(styles['bold'], 'markWithColor')}>{this.props.deployment}</span> and
           your customer, it is predicted
           that <span className={classNames(styles['bold'], 'markWithColor')}>{this.props.id}</span> is {best.value}% certain to
-          buy <span className={classNames(styles['bold'], 'markWithColor')}>{best.product[0]}</span>.
+          buy <span className={classNames(styles['bold'], 'markWithColor')}>{best.product}</span>.
           </p>
         </div>
 

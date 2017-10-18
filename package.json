@@ -19,6 +19,7 @@
     "nconf": "0.8.4",
     "react": "0.14.8",
     "react-dom": "0.14.8",
+    "recharts": "^1.0.0-alpha.6",
     "request": "2.72.0"
   },
   "repository": {},
