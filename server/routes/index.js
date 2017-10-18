@@ -19,6 +19,7 @@
 var express = require('express');
 var envRouter = express.Router();
 var PMClient = require('../service-client');
+const debug = require('debug')('sample');
 
 envRouter.get('/deployments', function (req, res) {
   var pmEnv = req.app.get('pm service env');
@@ -59,15 +60,20 @@ envRouter.post('/feedback', function (req, res) {
   let feedbackUrl = req.body.feedbackUrl;
   let feedbackData = req.body.feedbackData;
   try {
+    debug(req.body.feedbackData);
     feedbackData = JSON.parse(feedbackData);
 
     var pmEnv = req.app.get('pm service env');
     var pmClient = new PMClient(pmEnv);
 
+    debug("Sending feedback on " + feedbackUrl + ":");
+    debug(feedbackData);
+
     pmClient.sendFeedback(feedbackUrl, feedbackData, function (errors, score) {
-      res.json({errors: errors, score: score});
+      res.json({errors: errors, result: score});
     });
   } catch (err) {
+    debug(err);
     res.status(500).json({errors: ['Provided feedback input is not valid']});
   }
 });

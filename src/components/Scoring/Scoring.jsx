@@ -153,9 +153,18 @@ class Scoring extends Component {
   handleFeedback (drugName, e) {
     e.preventDefault();
     console.log(drugName);
+    if (this.state.scoringHref == null) {
+      this._alert('Select a Deployment');
+      return;
+    }
+    if (this.state.scoringData == null) {
+      this._alert('Select a Customer');
+      return;
+    }
     var feedbackData = JSON.parse(this.state.scoringData.value);
+    feedbackData.push(drugName);
     var data = {
-      feedbackData: feedbackData.push(drugName),
+      feedbackData: JSON.stringify(feedbackData),
       feedbackUrl: this.state.feedbackUrl
     };
     this.sendFeedback(data, (error, result) => {
@@ -223,6 +232,13 @@ componentWillUnmount () {
         probability={this.state.scoringResult.probability.values}
         onClose={this.reset}
       />);
+    let feedbackButtons = modelInfo['label-values'].map(label => {
+      return (
+        <div className={styles.group}>
+          <div onClick={(e) => this.handleFeedback(label.value, e)} className={styles.runButton + ' center'}>{label.title} is the best</div>
+        </div>
+      );
+    });
     return (
       <div>
         <div className={styles.group}>
@@ -236,15 +252,7 @@ componentWillUnmount () {
         <div className={styles.group}>
           <div onClick={this.handlePredicting} className={styles.runButton + ' center'}>Generate Predictions</div>
         </div>
-        <div className={styles.group}>
-          <div onClick={(e) => this.handleFeedback('drugA', e)} className={styles.runButton + ' center'}>Drug A is the best</div>
-        </div>
-        <div className={styles.group}>
-          <div onClick={(e) => this.handleFeedback('drugB', e)} className={styles.runButton + ' center'}>Drug B is the best</div>
-        </div>
-        <div className={styles.group}>
-          {scoringResult}
-        </div>
+        {feedbackButtons}
       </div>
     );
   }

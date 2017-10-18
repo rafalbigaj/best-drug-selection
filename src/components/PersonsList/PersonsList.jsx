@@ -19,11 +19,18 @@ import ReactDOM from 'react-dom';
 import styles from './style.css';
 import classNames from 'classnames';
 
+let genderTitles = {
+  'M': 'Male',
+  'F': 'Female'
+}
+
 function PersonCard (props) {
-  let gender = props.data[0];
-  let age = props.data[1];
-  let martialStatus = props.data[2];
-  let profession = props.data[3];
+  let gender = genderTitles[props.data[1]];
+  let age = props.data[0];
+  let bp = props.data[2];
+  let ch = props.data[3];
+  let na = props.data[4];
+  let k = props.data[5];
   let handleClick = function () {
     props.onChoose && props.onChoose(props.name, JSON.stringify(props.data));
   };
@@ -32,21 +39,26 @@ function PersonCard (props) {
     <div onClick={handleClick} className={classNames(styles['user-card'], {'markWithColorBorder': props.highligth})}>
       <img className={styles['user-avatar']} src={'images/avatars/' + props.name.toLowerCase() + '.svg'}/>
       <h1 className={classNames(styles['user-name'], {'markWithColor': props.highligth})}>{props.name}</h1>
-      <p className={styles['user-title']}>{profession}</p>
+      <p className={styles['user-title']}>{gender}, {age} years</p>
 
       <div className={styles['user-info']} style={{borderRight: '2px solid #DFDFDF'}}>
-        <p className={styles['user-info-line1']}>Gender</p>
-        <p className={styles['user-info-line2']}>{gender}</p>
+        <p className={styles['user-info-line1']}>BP</p>
+        <p className={styles['user-info-line2']}>{bp}</p>
       </div>
 
       <div className={styles['user-info']} style={{borderRight: '2px solid #DFDFDF'}}>
-        <p className={styles['user-info-line1']}>Age</p>
-        <p className={styles['user-info-line2']}>{age} years</p>
+        <p className={styles['user-info-line1']}>CH</p>
+        <p className={styles['user-info-line2']}>{ch}</p>
+      </div>
+
+      <div className={styles['user-info']} style={{borderRight: '2px solid #DFDFDF'}}>
+        <p className={styles['user-info-line1']}>NA</p>
+        <p className={styles['user-info-line2']}>{na}</p>
       </div>
 
       <div className={styles['user-info']}>
-        <p className={styles['user-info-line1']}>Marital Status</p>
-        <p className={styles['user-info-line2']}>{martialStatus}</p>
+        <p className={styles['user-info-line1']}>K</p>
+        <p className={styles['user-info-line2']}>{k}</p>
       </div>
     </div>
   );

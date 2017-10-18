@@ -24,6 +24,7 @@ const TOKEN_PATH = '/v3/identity/token';
 
 const modelInfo = require('../config/model.json');
 const schema = modelInfo['model-schema'].map(obj => obj.name);
+const feedback_schema = schema.concat([modelInfo['label']])
 
 function getTokenFromTokenEndoint (tokenEndpoint, user, password) {
   debug('getTokenFromTokenEndoint', tokenEndpoint);
@@ -126,23 +127,24 @@ ServiceClient.prototype = {
     logger.enter('sendFeedback()', 'href: ' + href + ', data: ' + data);
     let options = {
       method: 'POST',
-      uri: href,
-      headers: {'content-type': 'application/json'}
+      uri: href
     };
-    let body = JSON.stringify({values: [data], fields: schema});
-    debug(body);
-    options.body = body;
+    let json = {values: [data], fields: feedback_schema};
+    debug(json);
+    options.json = json;
 
     this.performRequest(options, function (error, response, body) {
       if (!error && response.statusCode === 200) {
-        var scoreResponse = JSON.parse(body);
+        let feedbackResponse = body;
+        debug('feedbackResponse', feedbackResponse);
 
         logger.info('sendFeedback()', `successfully sent feedback for feedbackUrl ${href}`);
-        callback && callback(null, scoreResponse);
+        callback && callback(null, feedbackResponse);
       } else if (error) {
         logger.error(error);
         callback && callback(JSON.stringify(error.message));
       } else {
+        debug('Service error:', response.statusCode, response.body);
         let error = JSON.stringify('Service error code: ' + response.statusCode);
         if (typeof response.body !== 'undefined') {
           try {
