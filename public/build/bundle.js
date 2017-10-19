@@ -14147,7 +14147,7 @@ var formatAxisMap = function formatAxisMap(props, axisMap, offset, axisType, cha
 /* 93 */
 /***/ (function(module, exports) {
 
-module.exports = {"model-schema":[{"name":"AGE","type":"integer"},{"name":"SEX","type":"string"},{"name":"BP","type":"string"},{"name":"CHOLESTEROL","type":"string"},{"name":"NA","type":"decimal(12,6)"},{"name":"K","type":"decimal(13,6)"}],"label":"DRUG","label-values":[{"title":"Drug A","value":"DrugA"},{"title":"Drug B","value":"DrugB"},{"title":"Drug C","value":"DrugC"},{"title":"Drug X (new)","value":"DrugX"}],"model-input":[{"id":"Alice","data":[24,"F","HIGH","NORMAL",0.613261,0.064726]},{"id":"Gregory","data":[32,"M","HIGH","NORMAL",0.52975,0.056087]},{"id":"Joanna","data":[44,"F","HIGH","NORMAL",0.898924,0.071023]},{"id":"Alexander","data":[65,"M","HIGH","NORMAL",0.635551,0.056043]}],"model-prediction-mapping":{"0":"Drug A","1":"Drug B","2":"Drug C","3":"Drug D","4":"Drug X"}}
+module.exports = {"model-schema":[{"name":"AGE","type":"integer"},{"name":"SEX","type":"string"},{"name":"BP","type":"string"},{"name":"CHOLESTEROL","type":"string"},{"name":"NA","type":"decimal(12,6)"},{"name":"K","type":"decimal(13,6)"}],"label":"DRUG","label-values":[{"title":"Drug A","value":"drugA"},{"title":"Drug B","value":"drugB"},{"title":"Drug C","value":"drugC"},{"title":"Drug X (new)","value":"drugX"},{"title":"Drug Y (new)","value":"drugY"}],"model-input":[{"name":"Alice","icon":"alice","data":[24,"F","HIGH","NORMAL",0.613261,0.064726]},{"name":"Gregory","icon":"gregory","data":[32,"M","HIGH","NORMAL",0.52975,0.056087]},{"name":"Joanna","icon":"joanna","data":[44,"F","HIGH","NORMAL",0.898924,0.071023]},{"name":"Alexander","icon":"alexander","data":[65,"M","HIGH","HIGH",0.635551,0.056043]},{"name":"Bill","icon":"alexander","data":[54,"M","NORMAL","HIGH",0.543355,0.032247]},{"name":"Olivia","icon":"alice","data":[49,"F","HIGH","NORMAL",0.52975,0.056087]},{"name":"Mark","icon":"gregory","data":[44,"M","LOW","NORMAL",0.84773,0.025274]},{"name":"Emma","icon":"joanna","data":[72,"F","NORMAL","NORMAL",0.526226,0.072234]}],"model-prediction-mapping":{"0":"Drug A","1":"Drug B","2":"Drug C","3":"Drug X","4":"Drug Y"}}
 
 /***/ }),
 /* 94 */
@@ -39751,7 +39751,7 @@ function PersonCard(props) {
   return _react2.default.createElement(
     'div',
     { onClick: handleClick, className: (0, _classnames2.default)(_style2.default['user-card'], { 'markWithColorBorder': props.highligth }) },
-    _react2.default.createElement('img', { className: _style2.default['user-avatar'], src: 'images/avatars/' + props.name.toLowerCase() + '.svg' }),
+    _react2.default.createElement('img', { className: _style2.default['user-avatar'], src: 'images/avatars/' + props.icon + '.svg' }),
     _react2.default.createElement(
       'h1',
       { className: (0, _classnames2.default)(_style2.default['user-name'], { 'markWithColor': props.highligth }) },
@@ -39849,7 +39849,8 @@ var PersonsList = function (_Component) {
       var personList = this.props.persons.map(function (person, index) {
         return _react2.default.createElement(PersonCard, {
           key: index,
-          name: person.id,
+          name: person.name,
+          icon: person.icon,
           data: person.data,
           onChoose: _this2.handleChoose,
           highligth: person.id === _this2.props.selected
@@ -42131,7 +42132,7 @@ exports = module.exports = __webpack_require__(45)();
 
 
 // module
-exports.push([module.i, ".style_runButton__15V43 {\n  background-color: #F15D4E;\n  color: white;\n  padding: 10px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n  text-align: center;\n  width: 250px;\n  cursor: pointer; }\n\n.style_group__1bIv7 {\n  padding-top: 34px; }\n\n.style_feedbackButton__12k4z {\n  padding-top: 8px;\n  padding-bottom: 20px;\n  margin-left: 20px;\n  display: inline-block; }\n\n.style_scoring-result__3as2d {\n  min-width: 420px;\n  width: 100%;\n  background-color: #ffffff;\n  color: #2a3261;\n  text-align: center;\n  display: inline-flex;\n  padding: 5px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }\n\n.style_resultText__2YQy9, .style_scoring-result-left__b9Lvc, .style_scoring-result-right__12kHl {\n  margin: 25px;\n  text-align: left;\n  padding-left: 40px; }\n\n.style_scoring-result-left__b9Lvc {\n  width: 30%;\n  display: inline-block;\n  padding-left: 3%; }\n\n.style_scoring-result-left__b9Lvc h1 {\n  font-size: 25px;\n  font-weight: 300; }\n\n.style_scoring-result-left__b9Lvc p {\n  font-size: 18px;\n  font-weight: 300;\n  text-align: left; }\n\n.style_scoring-result-right__12kHl {\n  width: 70%;\n  min-width: 700px;\n  float: right;\n  border-left: 1px solid #dfdfdf;\n  display: flex;\n  justify-content: space-between; }\n\n.style_scoring-result-right__12kHl h1 {\n  font-size: 18px;\n  color: #2A3261;\n  font-weight: 400; }\n\n.style_scoring-result-right__12kHl p {\n  font-size: 16px;\n  color: #2A3261;\n  font-weight: 300; }\n\n.style_bold__8fK7o {\n  font-weight: 600; }\n\n.style_scoring-result-left__b9Lvc table {\n  color: #9b9b9b;\n  font-size: 14px;\n  font-weight: 600;\n  margin-top: 5px;\n  text-align: left;\n  width: 100%; }\n\n.style_scoring-result-left__b9Lvc table tr td:first-child {\n  font-size: 12px;\n  font-weight: 400; }\n", ""]);
+exports.push([module.i, ".style_runButton__15V43 {\n  background-color: #F15D4E;\n  color: white;\n  padding: 10px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n  text-align: center;\n  width: 250px;\n  cursor: pointer; }\n\n.style_group__1bIv7 {\n  padding-top: 34px; }\n\n.style_feedbackButton__12k4z {\n  padding-top: 8px;\n  padding-bottom: 20px;\n  margin-left: 20px;\n  display: inline-block; }\n  .style_feedbackButton__12k4z .style_runButton__15V43 {\n    width: 160px; }\n\n.style_scoring-result__3as2d {\n  min-width: 420px;\n  width: 100%;\n  background-color: #ffffff;\n  color: #2a3261;\n  text-align: center;\n  display: inline-flex;\n  padding: 5px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }\n\n.style_resultText__2YQy9, .style_scoring-result-left__b9Lvc, .style_scoring-result-right__12kHl {\n  margin: 25px;\n  text-align: left;\n  padding-left: 40px; }\n\n.style_scoring-result-left__b9Lvc {\n  width: 30%;\n  display: inline-block;\n  padding-left: 3%; }\n\n.style_scoring-result-left__b9Lvc h1 {\n  font-size: 25px;\n  font-weight: 300; }\n\n.style_scoring-result-left__b9Lvc p {\n  font-size: 18px;\n  font-weight: 300;\n  text-align: left; }\n\n.style_scoring-result-right__12kHl {\n  width: 70%;\n  min-width: 700px;\n  float: right;\n  border-left: 1px solid #dfdfdf;\n  display: flex;\n  justify-content: space-between; }\n\n.style_scoring-result-right__12kHl h1 {\n  font-size: 18px;\n  color: #2A3261;\n  font-weight: 400; }\n\n.style_scoring-result-right__12kHl p {\n  font-size: 16px;\n  color: #2A3261;\n  font-weight: 300; }\n\n.style_bold__8fK7o {\n  font-weight: 600; }\n\n.style_scoring-result-left__b9Lvc table {\n  color: #9b9b9b;\n  font-size: 14px;\n  font-weight: 600;\n  margin-top: 5px;\n  text-align: left;\n  width: 100%; }\n\n.style_scoring-result-left__b9Lvc table tr td:first-child {\n  font-size: 12px;\n  font-weight: 400; }\n", ""]);
 
 // exports
 exports.locals = {

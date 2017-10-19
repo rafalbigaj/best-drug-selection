@@ -37,7 +37,7 @@ function PersonCard (props) {
 
   return (
     <div onClick={handleClick} className={classNames(styles['user-card'], {'markWithColorBorder': props.highligth})}>
-      <img className={styles['user-avatar']} src={'images/avatars/' + props.name.toLowerCase() + '.svg'}/>
+      <img className={styles['user-avatar']} src={'images/avatars/' + props.icon + '.svg'}/>
       <h1 className={classNames(styles['user-name'], {'markWithColor': props.highligth})}>{props.name}</h1>
       <p className={styles['user-title']}>{gender}, {age} years</p>
 
@@ -76,7 +76,8 @@ class PersonsList extends Component {
     let personList = this.props.persons.map((person, index) => {
       return <PersonCard
         key={index}
-        name={person.id}
+        name={person.name}
+        icon={person.icon}
         data={person.data}
         onChoose={this.handleChoose}
         highligth={person.id === this.props.selected}

@@ -12,11 +12,15 @@
   padding-top: 34px;
 }
 
-.feedbackButton{
+.feedbackButton {
   padding-top: 8px;
   padding-bottom: 20px;
   margin-left: 20px;
   display: inline-block;
+
+  .runButton {
+    width: 160px;
+  }
 }
 
 .scoring-result {
