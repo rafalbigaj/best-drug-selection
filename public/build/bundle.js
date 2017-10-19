@@ -39415,7 +39415,7 @@ var Chart = function (_Component) {
           _recharts.BarChart,
           { width: 700, height: 300, data: this.probability, layout: 'vertical',
             margin: { top: 25, right: 10, left: 10, bottom: 15 } },
-          _react2.default.createElement(_recharts.XAxis, { type: 'number', dataKey: 'value' }),
+          _react2.default.createElement(_recharts.XAxis, { type: 'number', dataKey: 'value', domain: [0, 100], tickFormatter: percentageFormat }),
           _react2.default.createElement(_recharts.YAxis, { type: 'category', dataKey: 'product' }),
           _react2.default.createElement(_recharts.Tooltip, null),
           _react2.default.createElement(_recharts.Bar, { dataKey: 'value', fill: '#1d3749' })
@@ -39426,6 +39426,10 @@ var Chart = function (_Component) {
 
   return Chart;
 }(_react.Component);
+
+var percentageFormat = function percentageFormat(value) {
+  return value + ' %';
+};
 
 Chart.propTypes = propTypes;
 

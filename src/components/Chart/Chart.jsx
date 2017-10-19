@@ -48,7 +48,7 @@ class Chart extends Component {
       <div>
         <BarChart width={700} height={300} data={this.probability} layout='vertical'
             margin={{top: 25, right: 10, left: 10, bottom: 15}}>
-           <XAxis type="number" dataKey="value"/>
+           <XAxis type="number" dataKey="value" domain={[0, 100]} tickFormatter={percentageFormat}/>
            <YAxis type="category" dataKey="product"/>
            <Tooltip/>
            <Bar dataKey="value" fill="#1d3749"/>
@@ -57,6 +57,10 @@ class Chart extends Component {
     );
   }
 }
+
+const percentageFormat = value => {
+  return `${value} %`;
+};
 
 Chart.propTypes = propTypes;
 
