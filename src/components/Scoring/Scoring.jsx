@@ -19,6 +19,7 @@ import ReactDOM from 'react-dom';
 import Table from '../DeploymentsTable';
 import PersonsList from '../PersonsList';
 import ScoringResult from './Result.jsx';
+import Loading from '../Loading';
 import styles from './style.scss';
 
 const modelInfo = require('../../../config/model.json');
@@ -31,7 +32,10 @@ class Scoring extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      deployments: []
+      deployments: [],
+      deploymentsLoading: true,
+      predictionLoading: false,
+      feedbackLoading: false
     };
     this.persons = modelInfo['model-input'];
     this.expectedSchema = modelInfo['model-schema'];
@@ -39,7 +43,6 @@ class Scoring extends Component {
     this.handleFeedback = this.handleFeedback.bind(this);
     this.setScoringData = this.setScoringData.bind(this);
     this.setScoringHref = this.setScoringHref.bind(this);
-    // this.setFeedbackUrl = this.setFeedbackUrl.bind(this);
     this.reset = this.reset.bind(this);
   }
 
@@ -64,10 +67,14 @@ class Scoring extends Component {
         return d;
       });
       ctx.setState({
-        deployments: result
+        deployments: result,
+        deploymentsLoading: false
       });
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
+      ctx.setState({
+        deploymentsLoading: false
+      });
       console.log(errorThrown);
       let err = errorThrown;
       if (jqXHR.responseJSON) {
@@ -97,16 +104,6 @@ class Scoring extends Component {
       this.handlePredicting();
     });
   }
-
-  // setScoringHref (id, data) {
-  //   if (this.state.scoringHref && this.state.scoringHref.id === id) {
-  //     return;
-  //   }
-  //   this.setState({
-  //     scoringHref: {id: id, value: data},
-  //     scoringResult: null
-  //   });
-  // }
 
   setScoringHref (id, data, feedbackUrl) {
     console.log(feedbackUrl);
@@ -138,7 +135,9 @@ class Scoring extends Component {
       this._alert('Select a Patient');
       return;
     }
-
+    this.setState({
+      predictionLoading: true
+    });
     var data = {
       scoringData: this.state.scoringData.value,
       scoringHref: this.state.scoringHref.value
@@ -147,9 +146,13 @@ class Scoring extends Component {
       if (!error) {
         console.log('scoringResult', result);
         this.setState({
-          scoringResult: result
+          scoringResult: result,
+          predictionLoading: false
         });
       } else {
+        this.setState({
+          predictionLoading: false
+        });
         this._alert(error);
       }
     });
@@ -166,6 +169,9 @@ class Scoring extends Component {
       this._alert('Select a Patient');
       return;
     }
+    this.setState({
+      feedbackLoading: true
+    });
     var feedbackData = JSON.parse(this.state.scoringData.value);
     feedbackData.push(drugName);
     var data = {
@@ -175,10 +181,14 @@ class Scoring extends Component {
     this.sendFeedback(data, (error, result) => {
       if (!error) {
         this.setState({
+          feedbackLoading: false,
           feedbackResult: result || true
         });
       } else {
         this._alert(error);
+        this.setState({
+          feedbackLoading: false
+        });
       }
     });
   }
@@ -252,14 +262,14 @@ class Scoring extends Component {
 
       feedbackPanel = (<div id="scoringResult" className={styles['scoring-result']} style={{paddingTop: "15px"}}>
       {
-        (!this.state.feedbackResult) ? (
+        !this.state.feedbackResult && !this.state.feedbackLoading ? (
         <div style={{width: "100%"}}>
           <p>We would like to know your opinion which drug is the most suitable for this patient?</p>
           {feedbackButtons}
-        </div>) :
+        </div>) : !this.state.feedbackLoading ?
         (<div style={{display: 'flex', alignItems: 'left'}}>
           <p style={{paddingLeft: "20px", textAlign: "left"}}>Thank you for your feedback!<br />Your suggestions will improve the future predictions.</p>
-        </div>)
+        </div>) : (<Loading></Loading>)
       }
       </div>)
     }
@@ -268,13 +278,14 @@ class Scoring extends Component {
       <div>
         <div className={styles.group}>
           <h3>Select a Deployment</h3>
-          <Table data={this.state.deployments} onChoose={this.setScoringHref} className="center" selected={this.state.scoringHref && this.state.scoringHref.id}/>
+          <Table data={this.state.deployments} onChoose={this.setScoringHref} className="center" selected={this.state.scoringHref && this.state.scoringHref.id} loading={this.state.deploymentsLoading}/>
         </div>
         { this.state.scoringHref ? (<div className={styles.group}>
           <h3>Select a Patient</h3>
           <PersonsList persons={this.persons} onChoose={this.setScoringData} selected={this.state.scoringData && this.state.scoringData.id}/>
         </div>) : null}
         <div className={styles.group}>
+          { this.state.predictionLoading ? (<Loading></Loading>) : null}
           {scoringResult}
           {feedbackPanel}
         </div>

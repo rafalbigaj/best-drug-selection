@@ -18,6 +18,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import styles from './style.scss';
 import classNames from 'classnames';
+import Loading from '../Loading';
 
 const propTypes = {
   data: React.PropTypes.arrayOf(React.PropTypes.shape({
@@ -80,9 +81,10 @@ class DeploymentsTable extends Component {
             })}
           </tbody>
         </table>
-        {this.props.data.length===0 &&
-          <div style={{padding: '3% 20%', color: '#797979'}}>To work with this application, you need to have online deployment of Product Line Prediction model created in your WML service instance.
-          For more information check application <a href='https://github.com/pmservice/product-line-prediction/blob/master/README.md' target='_blank'>readme</a>.</div>
+        { this.props.loading && (<Loading></Loading>) }
+        { this.props.data.length === 0 && !this.props.loading ?
+          (<div style={{padding: '3% 20%', color: '#797979'}}>To work with this application, you need to have online deployment of Product Line Prediction model created in your WML service instance.
+          For more information check application <a href='https://github.com/pmservice/product-line-prediction/blob/master/README.md' target='_blank'>readme</a>.</div>) : null
         }
       </div>
     );

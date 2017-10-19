@@ -80,7 +80,7 @@ class PersonsList extends Component {
         icon={person.icon}
         data={person.data}
         onChoose={this.handleChoose}
-        highligth={person.id === this.props.selected}
+        highligth={person.name === this.props.selected}
       />;
     });
     return (

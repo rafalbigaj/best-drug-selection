@@ -32,8 +32,6 @@ class Chart extends Component {
       deployments: []
     };
 
-    console.log('Chart props- ', props);
-
     let probability = props.scoringResult.probability.values;
     // translate index to a product
     this.probability = probability.map((val, index) => ({product: predictionsMapping[index], value: Math.round(val * 100)}));
