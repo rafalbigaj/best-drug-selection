@@ -18,6 +18,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import styles from './style.scss';
+import Chart from '../Chart';
 
 const predictionsMapping = require('../../../config/model.json')['model-prediction-mapping'];
 const modelInfo = require('../../../config/model.json');
@@ -60,67 +61,23 @@ class Result extends Component {
     const na = scoringValues[4];
     const k = scoringValues[5];
 
-    let feedbackButtons = modelInfo['label-values'].map(label => {
-      return (
-        <div className={styles.feedbackButton}>
-          <div onClick={(e) => this.props.handleFeedback(label.value, e)} className={styles.runButton + ' center'}>{label.title} is the best</div>
-        </div>
-      );
-    });
+    let scoringChart = (<Chart scoringResult={this.props.scoringResult} />);
 
     return (
       <div id="scoringResult" className={styles['scoring-result']}>
         <div className={styles['scoring-result-left']}>
-          <table>
-            <tbody>
-              <tr>
-                <td>Name</td>
-                <td>{this.props.id}</td>
-              </tr>
-              <tr>
-                <td>Age</td>
-                <td>{age}</td>
-              </tr>
-              <tr>
-                <td>Gender</td>
-                <td>{gender}</td>
-              </tr>
-              <tr>
-                <td>BP</td>
-                <td>{bp}</td>
-              </tr>
-              <tr>
-                <td>CH</td>
-                <td>{ch}</td>
-              </tr>
-              <tr>
-                <td>NA</td>
-                <td>{na}</td>
-              </tr>
-              <tr>
-                <td>K</td>
-                <td>{k}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div className={styles['scoring-result-middle']}>
           <h1>{best.value}% {best.product}</h1>
           <p className={styles['scoring-paragraph']}>Based
           on your selection of <span className={classNames(styles['bold'], 'markWithColor')}>{this.props.deployment}</span> and
-          your customer, it is predicted
-          that <span className={classNames(styles['bold'], 'markWithColor')}>{this.props.id}</span> is {best.value}% certain to
-          buy <span className={classNames(styles['bold'], 'markWithColor')}>{best.product}</span>.
+          your patient, it is predicted
+          that <span className={classNames(styles['bold'], 'markWithColor')}>{best.product}</span> is going
+          to help <span className={classNames(styles['bold'], 'markWithColor')}>{this.props.id}</span> in {best.value}%.
           </p>
         </div>
 
         <div className={styles['scoring-result-right']}>
-          {
-            (!this.props.feedbackResult) ? (<div>
-              {feedbackButtons}
-            </div>) : (<div style={{display: 'flex', alignItems: 'center'}}> Your feedback delivered.</div>)
-          }
+          {scoringChart}
+
           <div style={{display: 'flex', alignItems: 'start', marginRight: '-20px', marginTop: '-20px'}}>
             <img src='/images/close.png' onClick={this.handleClose} style={{cursor: 'pointer'}}/>
           </div>

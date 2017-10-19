@@ -14,6 +14,9 @@
 
 .feedbackButton{
   padding-top: 8px;
+  padding-bottom: 20px;
+  margin-left: 20px;
+  display: inline-block;
 }
 
 .scoring-result {
@@ -27,45 +30,34 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.scoring-result-left {
-  display: flex;
-  align-items: center;
-  width: 26%;
-  min-width: 100px;
-  margin-left: 20px;
-}
-
-.scoring-result-left img {
-  width: 100%;
-}
-
 .resultText {
   margin: 25px;
   text-align: left;
   padding-left: 40px;
 }
 
-.scoring-result-middle{
+.scoring-result-left {
   @extend .resultText;
+  width: 30%;
   display: inline-block;
   padding-left: 3%;
 }
 
-.scoring-result-middle h1{
+.scoring-result-left h1 {
   font-size: 25px;
   font-weight: 300;
 }
 
-.scoring-result-middle p{
+.scoring-result-left p {
   font-size: 18px;
   font-weight: 300;
   text-align: left;
 }
 
-.scoring-result-right{
+.scoring-result-right {
   @extend .resultText;
-  width: 50%;
-  max-width: 400px;
+  width: 70%;
+  min-width: 700px;
   float: right;
   border-left: 1px solid #dfdfdf;
   display: flex;

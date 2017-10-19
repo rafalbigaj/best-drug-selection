@@ -35,9 +35,8 @@ class Chart extends Component {
     console.log('Chart props- ', props);
 
     let probability = props.scoringResult.probability.values;
-    // translate index to a product and sort descendingly
-    this.probability = probability.map((val, index) => ({product: predictionsMapping[index], value: Math.round(val * 100)}))
-    .sort((a, b) => b.value - a.value);
+    // translate index to a product
+    this.probability = probability.map((val, index) => ({product: predictionsMapping[index], value: Math.round(val * 100)}));
   }
 
   componentWillMount () {
@@ -54,8 +53,7 @@ class Chart extends Component {
            <XAxis type="number" dataKey="value"/>
            <YAxis type="category" dataKey="product"/>
            <Tooltip/>
-           <Legend />
-           <Bar dataKey="value" fill="#1d3749" />
+           <Bar dataKey="value" fill="#1d3749"/>
         </BarChart>
       </div>
     );

@@ -17,7 +17,7 @@
   "model-input": [
     {"id": "Alice", "data": [24,"F","HIGH","NORMAL",0.613261,0.064726]},
     {"id": "Gregory", "data": [32,"M","HIGH","NORMAL",0.529750,0.056087]},
-    {"id": "Joanna", "data": [58,"F","HIGH","NORMAL",0.868924,0.061023]},
+    {"id": "Joanna", "data": [44,"F","HIGH","NORMAL",0.898924,0.071023]},
     {"id": "Alexander", "data": [65,"M","HIGH","NORMAL",0.635551,0.056043]}
   ],
   "model-prediction-mapping": {

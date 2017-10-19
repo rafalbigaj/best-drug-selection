@@ -17,7 +17,6 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import Table from '../DeploymentsTable';
-import Chart from '../Chart';
 import PersonsList from '../PersonsList';
 import ScoringResult from './Result.jsx';
 import styles from './style.scss';
@@ -134,7 +133,7 @@ class Scoring extends Component {
       return;
     }
     if (this.state.scoringData == null) {
-      this._alert('Select a Customer');
+      this._alert('Select a Patient');
       return;
     }
 
@@ -162,7 +161,7 @@ class Scoring extends Component {
       return;
     }
     if (this.state.scoringData == null) {
-      this._alert('Select a Customer');
+      this._alert('Select a Patient');
       return;
     }
     var feedbackData = JSON.parse(this.state.scoringData.value);
@@ -229,7 +228,7 @@ class Scoring extends Component {
   }
 
   render () {
-    let scoringResult, scoringChart;
+    let scoringResult, feedbackPanel;
     if (this.state.scoringResult) {
       scoringResult = (<ScoringResult
         id={this.state.scoringData.id}
@@ -241,12 +240,26 @@ class Scoring extends Component {
         feedbackResult={this.state.feedbackResult}
       />);
 
-      scoringChart = (
-        <div id="scoringResult" className={styles['scoring-result']}>
-          <Chart
-            scoringResult={this.state.scoringResult}>
-          </Chart>
-      </div>);
+      let feedbackButtons = modelInfo['label-values'].map(label => {
+        return (
+          <div className={styles.feedbackButton}>
+            <div onClick={(e) => this.handleFeedback(label.value, e)} className={styles.runButton + ' center'}>{label.title}</div>
+          </div>
+        );
+      });
+
+      feedbackPanel = (<div id="scoringResult" className={styles['scoring-result']} style={{paddingTop: "15px"}}>
+      {
+        (!this.props.feedbackResult) ? (
+        <div style={{width: "100%"}}>
+          <p>We would like to know your opinion which drug is the most suitable for this patient?</p>
+          {feedbackButtons}
+        </div>) :
+        (<div style={{display: 'flex', alignItems: 'center'}}>
+          Thank you for your feedback. Your suggestion will improve the future predictions.
+        </div>)
+      }
+      </div>)
     }
 
     return (
@@ -256,12 +269,12 @@ class Scoring extends Component {
           <Table data={this.state.deployments} onChoose={this.setScoringHref} className="center" selected={this.state.scoringHref && this.state.scoringHref.id}/>
         </div>
         { this.state.scoringHref ? (<div className={styles.group}>
-          <h3>Select a Customer</h3>
+          <h3>Select a Patient</h3>
           <PersonsList persons={this.persons} onChoose={this.setScoringData} selected={this.state.scoringData && this.state.scoringData.id}/>
         </div>) : null}
         <div className={styles.group}>
           {scoringResult}
-          {scoringChart}
+          {feedbackPanel}
         </div>
         { this.state.scoringData && this.state.scoringHref && this.state.scoringResult ? (<div className={styles.group}>
           <div onClick={this.handlePredicting} className={styles.runButton + ' center'} style={{marginBottom: '30px'}}>Regenerate Predictions</div>
