@@ -90,7 +90,8 @@ class Scoring extends Component {
     }
     this.setState({
       scoringData: {id: id, value: data},
-      scoringResult: null
+      scoringResult: null,
+      feedbackResult: null
     }, () => {
       console.log('setScoringData', this.state.scoringData);
       this.handlePredicting();
@@ -115,7 +116,8 @@ class Scoring extends Component {
     this.setState({
       scoringHref: {id: id, value: data},
       scoringResult: null,
-      feedbackUrl: feedbackUrl
+      feedbackUrl: feedbackUrl,
+      feedbackResult: null
     });
   }
 
@@ -250,13 +252,13 @@ class Scoring extends Component {
 
       feedbackPanel = (<div id="scoringResult" className={styles['scoring-result']} style={{paddingTop: "15px"}}>
       {
-        (!this.props.feedbackResult) ? (
+        (!this.state.feedbackResult) ? (
         <div style={{width: "100%"}}>
           <p>We would like to know your opinion which drug is the most suitable for this patient?</p>
           {feedbackButtons}
         </div>) :
-        (<div style={{display: 'flex', alignItems: 'center'}}>
-          Thank you for your feedback. Your suggestion will improve the future predictions.
+        (<div style={{display: 'flex', alignItems: 'left'}}>
+          <p style={{paddingLeft: "20px", textAlign: "left"}}>Thank you for your feedback!<br />Your suggestions will improve the future predictions.</p>
         </div>)
       }
       </div>)

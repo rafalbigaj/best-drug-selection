@@ -40197,7 +40197,8 @@ var Scoring = function (_Component) {
       }
       this.setState({
         scoringData: { id: id, value: data },
-        scoringResult: null
+        scoringResult: null,
+        feedbackResult: null
       }, function () {
         console.log('setScoringData', _this2.state.scoringData);
         _this2.handlePredicting();
@@ -40224,7 +40225,8 @@ var Scoring = function (_Component) {
       this.setState({
         scoringHref: { id: id, value: data },
         scoringResult: null,
-        feedbackUrl: feedbackUrl
+        feedbackUrl: feedbackUrl,
+        feedbackResult: null
       });
     }
   }, {
@@ -40378,7 +40380,7 @@ var Scoring = function (_Component) {
         feedbackPanel = _react2.default.createElement(
           'div',
           { id: 'scoringResult', className: _style2.default['scoring-result'], style: { paddingTop: "15px" } },
-          !this.props.feedbackResult ? _react2.default.createElement(
+          !this.state.feedbackResult ? _react2.default.createElement(
             'div',
             { style: { width: "100%" } },
             _react2.default.createElement(
@@ -40389,8 +40391,14 @@ var Scoring = function (_Component) {
             feedbackButtons
           ) : _react2.default.createElement(
             'div',
-            { style: { display: 'flex', alignItems: 'center' } },
-            'Thank you for your feedback. Your suggestion will improve the future predictions.'
+            { style: { display: 'flex', alignItems: 'left' } },
+            _react2.default.createElement(
+              'p',
+              { style: { paddingLeft: "20px", textAlign: "left" } },
+              'Thank you for your feedback!',
+              _react2.default.createElement('br', null),
+              'Your suggestions will improve the future predictions.'
+            )
           )
         );
       }
