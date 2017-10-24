@@ -48,15 +48,33 @@ class Scoring extends Component {
 
   componentWillMount () {
     let ctx = this;
+
+    let fieldTypeAliases = {
+      'decimal': 'integer'
+    };
+
+    function baseFieldType(fieldType) {
+      fieldType = fieldType.split('(')[0]; // get rid of type size e.g. 'decimal(12,6)'
+      if (fieldTypeAliases.hasOwnProperty(fieldType)) {
+        fieldType = fieldTypeAliases[fieldType];
+      }
+      return fieldType;
+    }
+
+    function sameFiledTypes(typeA, typeB) {
+      return baseFieldType(typeA) == baseFieldType(typeB);
+    }
+
     this.serverRequest = $.get('/env/deployments', function (result) {
       // validate deployment's model schema
       result = result.map(d => {
         let matches = false;
-        let schema = d.model.input_data_schema.fields;
-        if (schema.length === ctx.expectedSchema.length) {
+        let schema = d.model.input_data_schema.fields.sort(function(a,b) { return a.name - b.name; });
+        let expectedSchema = ctx.expectedSchema.sort(function(a,b) { return a.name - b.name; });
+        if (schema.length === expectedSchema.length) {
           matches = true;
           for (let i = 0; i < schema.length; i++) {
-            if ((schema[i].type !== ctx.expectedSchema[i].type) || (schema[i].name !== ctx.expectedSchema[i].name)) {
+            if (!sameFiledTypes(schema[i].type, expectedSchema[i].type) || (schema[i].name !== expectedSchema[i].name)) {
               matches = false;
               break;
             }
